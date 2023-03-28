@@ -16,13 +16,12 @@ export class AppointmentService {
     private appointmentModel: Model<AppointmentDocument>,
   ) {}
 
-  async create(
-    createAppointmentDto: CreateAppointmentDto,
-  ): Promise<Appointment> {
-    const createdAppointment = new this.appointmentModel(createAppointmentDto);
-    return createdAppointment.save();
+  async create(createAppointmentDto: CreateAppointmentDto): Promise<Boolean> {
+    const createdAppointment = await new this.appointmentModel(
+      createAppointmentDto,
+    ).save();
+    return true;
   }
-
   async findAll(): Promise<Appointment[]> {
     return this.appointmentModel.find().exec();
   }
@@ -41,7 +40,7 @@ export class AppointmentService {
       { new: true },
     );
     if (!existingAppointment) {
-      throw new NotFoundException(`Student #${id} not found`);
+      throw new NotFoundException(`Appointment #${id} not found`);
     }
     return existingAppointment;
   }
@@ -51,7 +50,7 @@ export class AppointmentService {
       id,
     );
     if (!deletedAppointment) {
-      throw new NotFoundException(`Student #${id} not found`);
+      throw new NotFoundException(`Appointment #${id} not found`);
     }
     return deletedAppointment;
   }
